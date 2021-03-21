@@ -6,9 +6,10 @@ const Button = ({ handleClick, text }) => {
 
 const Statistic = ({ name, stats }) => {
     return (
-        <p>
-            {name} {stats}
-        </p>
+        <tr>
+            <td>{name}</td>
+            <td>{stats}</td>
+        </tr>
     );
 };
 
@@ -40,12 +41,16 @@ const Statistics = ({ good, neutral, bad }) => {
     return (
         <>
             <h1>statistics</h1>
-            <Statistic name="good" stats={typeVar("good")} />
-            <Statistic name="neutral" stats={typeVar("neutral")} />
-            <Statistic name="bad" stats={typeVar("bad")} />
-            <Statistic name="all" stats={all} />
-            <Statistic name="average" stats={average} />
-            <Statistic name="positive" stats={positive} />
+            <table>
+                <tbody>
+                    <Statistic name="good" stats={typeVar("good")} />
+                    <Statistic name="neutral" stats={typeVar("neutral")} />
+                    <Statistic name="bad" stats={typeVar("bad")} />
+                    <Statistic name="all" stats={all} />
+                    <Statistic name="average" stats={average} />
+                    <Statistic name="positive" stats={positive} />
+                </tbody>
+            </table>
         </>
     );
 };
