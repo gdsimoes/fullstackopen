@@ -4,10 +4,10 @@ const Button = ({ handleClick, text }) => {
     return <button onClick={handleClick}>{text}</button>;
 };
 
-const Display = ({ type, typeVar }) => {
+const Display = ({ name, stats }) => {
     return (
         <p>
-            {type} {typeVar}
+            {name} {stats}
         </p>
     );
 };
@@ -44,6 +44,11 @@ const App = () => {
         }
     };
 
+    // some stats constants
+    const all = good + neutral + bad;
+    const average = (good - bad) / all;
+    const positive = `${(good / (good + neutral + bad)) * 100} %`;
+
     return (
         <div>
             <h1>give feedback</h1>
@@ -52,9 +57,12 @@ const App = () => {
             <Button handleClick={eventHandler("bad")} text="bad" />
 
             <h1>statistics</h1>
-            <Display type="good" typeVar={typeVar("good")} />
-            <Display type="neutral" typeVar={typeVar("neutral")} />
-            <Display type="bad" typeVar={typeVar("bad")} />
+            <Display name="good" stats={typeVar("good")} />
+            <Display name="neutral" stats={typeVar("neutral")} />
+            <Display name="bad" stats={typeVar("bad")} />
+            <Display name="all" stats={all} />
+            <Display name="average" stats={average} />
+            <Display name="positive" stats={positive} />
         </div>
     );
 };
