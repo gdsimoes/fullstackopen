@@ -4,11 +4,49 @@ const Button = ({ handleClick, text }) => {
     return <button onClick={handleClick}>{text}</button>;
 };
 
-const Display = ({ name, stats }) => {
+const Statistic = ({ name, stats }) => {
     return (
         <p>
             {name} {stats}
         </p>
+    );
+};
+
+const Statistics = ({ good, neutral, bad }) => {
+    // some stats constants
+    const all = good + neutral + bad;
+    const average = (good - bad) / all;
+    const positive = `${(good / (good + neutral + bad)) * 100} %`;
+
+    const typeVar = (type) => {
+        if (type === "good") {
+            return good;
+        } else if (type === "neutral") {
+            return neutral;
+        } else {
+            return bad;
+        }
+    };
+
+    // Show no statistics before feedback is given.
+    if (all === 0) {
+        return (
+            <>
+                <h1>statistics</h1>
+                <p>No feedback given</p>
+            </>
+        );
+    }
+    return (
+        <>
+            <h1>statistics</h1>
+            <Statistic name="good" stats={typeVar("good")} />
+            <Statistic name="neutral" stats={typeVar("neutral")} />
+            <Statistic name="bad" stats={typeVar("bad")} />
+            <Statistic name="all" stats={all} />
+            <Statistic name="average" stats={average} />
+            <Statistic name="positive" stats={positive} />
+        </>
     );
 };
 
@@ -34,21 +72,6 @@ const App = () => {
         }
     };
 
-    const typeVar = (type) => {
-        if (type === "good") {
-            return good;
-        } else if (type === "neutral") {
-            return neutral;
-        } else {
-            return bad;
-        }
-    };
-
-    // some stats constants
-    const all = good + neutral + bad;
-    const average = (good - bad) / all;
-    const positive = `${(good / (good + neutral + bad)) * 100} %`;
-
     return (
         <div>
             <h1>give feedback</h1>
@@ -56,13 +79,7 @@ const App = () => {
             <Button handleClick={eventHandler("neutral")} text="neutral" />
             <Button handleClick={eventHandler("bad")} text="bad" />
 
-            <h1>statistics</h1>
-            <Display name="good" stats={typeVar("good")} />
-            <Display name="neutral" stats={typeVar("neutral")} />
-            <Display name="bad" stats={typeVar("bad")} />
-            <Display name="all" stats={all} />
-            <Display name="average" stats={average} />
-            <Display name="positive" stats={positive} />
+            <Statistics good={good} neutral={neutral} bad={bad} />
         </div>
     );
 };
