@@ -18,15 +18,48 @@ const App = () => {
         return Math.floor(Math.random() * array.length);
     }
 
+    // handleClick functions
+    function handleVote() {
+        const copyVotes = [...votes];
+        copyVotes[selected] += 1;
+        setVotes(copyVotes);
+    }
+
+    function handleNext() {
+        setSelected(getRandomIndex(anecdotes));
+    }
+
+    // return index of most voted anecdote
+    function mostVoted() {
+        function reducer(guessIndex, currentValue, currentIndex) {
+            if (votes[guessIndex] < currentValue) {
+                return currentIndex;
+            } else {
+                return guessIndex;
+            }
+        }
+
+        const firstIndex = 0;
+
+        return votes.reduce(reducer, firstIndex);
+    }
+
+    // new array filled with zeros
+    const baseArray = new Array(anecdotes.length).fill(0);
+
     const [selected, setSelected] = useState(getRandomIndex(anecdotes));
+    const [votes, setVotes] = useState(baseArray);
 
     return (
         <div>
+            <h2>Anecdote of the day</h2>
             <p>{anecdotes[selected]}</p>
-            <Button
-                handleClick={() => setSelected(getRandomIndex(anecdotes))}
-                text="next anecdote"
-            />
+            <p>has {votes[selected]} votes</p>
+            <Button handleClick={handleVote} text="vote" />
+            <Button handleClick={handleNext} text="next anecdote" />
+
+            <h2>Anecdote with most votes</h2>
+            <p>{anecdotes[mostVoted()]}</p>
         </div>
     );
 };
