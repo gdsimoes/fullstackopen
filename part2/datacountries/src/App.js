@@ -16,7 +16,7 @@ const App = () => {
     return (
         <>
             <FindCountries query={query} setQuery={setQuery} />
-            <Display query={query} countries={countries} />
+            <Display query={query} setQuery={setQuery} countries={countries} />
         </>
     );
 };

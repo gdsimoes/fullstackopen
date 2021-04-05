@@ -1,7 +1,8 @@
 import React from "react";
 import Details from "./Details";
+import ShowButton from "./ShowButton";
 
-const Display = ({ query, countries }) => {
+const Display = ({ query, setQuery, countries }) => {
     const filteredCountries = countries.filter((country) =>
         country.name.toLowerCase().includes(query.toLowerCase())
     );
@@ -12,7 +13,10 @@ const Display = ({ query, countries }) => {
         return <Details country={filteredCountries[0]} />;
     } else {
         return filteredCountries.map((country) => (
-            <div key={country.numericCode}>{country.name}</div>
+            <div key={country.numericCode}>
+                {country.name}
+                <ShowButton setQuery={setQuery} name={country.name} />
+            </div>
         ));
     }
 };
