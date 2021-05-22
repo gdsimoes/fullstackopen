@@ -17,17 +17,7 @@ const Statistics = ({ good, neutral, bad }) => {
     // some stats constants
     const all = good + neutral + bad;
     const average = (good - bad) / all;
-    const positive = `${(good / (good + neutral + bad)) * 100} %`;
-
-    const typeVar = (type) => {
-        if (type === "good") {
-            return good;
-        } else if (type === "neutral") {
-            return neutral;
-        } else {
-            return bad;
-        }
-    };
+    const positive = `${(good / all) * 100} %`;
 
     // Show no statistics before feedback is given.
     if (all === 0) {
@@ -43,9 +33,9 @@ const Statistics = ({ good, neutral, bad }) => {
             <h1>statistics</h1>
             <table>
                 <tbody>
-                    <Statistic name="good" stats={typeVar("good")} />
-                    <Statistic name="neutral" stats={typeVar("neutral")} />
-                    <Statistic name="bad" stats={typeVar("bad")} />
+                    <Statistic name="good" stats={good} />
+                    <Statistic name="neutral" stats={neutral} />
+                    <Statistic name="bad" stats={bad} />
                     <Statistic name="all" stats={all} />
                     <Statistic name="average" stats={average} />
                     <Statistic name="positive" stats={positive} />
@@ -61,7 +51,8 @@ const App = () => {
     const [neutral, setNeutral] = useState(0);
     const [bad, setBad] = useState(0);
 
-    // I'm not a fan of switch. Maybe I'll change this later.
+    // I'm not a fan of switch. It's annoyingg how we need to put the
+    // default case to avoid warnings.
     const eventHandler = (type) => {
         switch (type) {
             case "good":
