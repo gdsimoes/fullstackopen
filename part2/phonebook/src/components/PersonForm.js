@@ -14,10 +14,6 @@ const PersonForm = (props) => {
 
     function addPerson(event) {
         event.preventDefault();
-        const person = {
-            name: newName,
-            number: newNumber,
-        };
 
         if (persons.some((person) => person.name === newName)) {
             alert(`${newName} is already added to phonebook`);
@@ -25,6 +21,10 @@ const PersonForm = (props) => {
             setNewName("");
             setNewNumber("");
         } else {
+            const person = {
+                name: newName,
+                number: newNumber,
+            };
             setPersons(persons.concat(person));
             setNewName("");
             setNewNumber("");
