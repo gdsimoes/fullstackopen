@@ -1,4 +1,5 @@
 import React from "react";
+import personService from "../services/personService";
 import NameForm from "./NameForm";
 import NumberForm from "./NumberForm";
 
@@ -21,13 +22,16 @@ const PersonForm = (props) => {
             setNewName("");
             setNewNumber("");
         } else {
-            const person = {
+            const personObj = {
                 name: newName,
                 number: newNumber,
             };
-            setPersons(persons.concat(person));
-            setNewName("");
-            setNewNumber("");
+
+            personService.create(personObj).then((person) => {
+                setPersons(persons.concat(personObj));
+                setNewName("");
+                setNewNumber("");
+            });
         }
     }
 
