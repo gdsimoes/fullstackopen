@@ -28,7 +28,7 @@ const PersonForm = (props) => {
             };
 
             personService.create(personObj).then((person) => {
-                setPersons(persons.concat(personObj));
+                setPersons(persons.concat(person));
                 setNewName("");
                 setNewNumber("");
             });

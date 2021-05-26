@@ -31,7 +31,11 @@ const App = () => {
                 setPersons={setPersons}
             />
             <h2>Numbers</h2>
-            <Persons persons={persons} newFilter={newFilter} />
+            <Persons
+                persons={persons}
+                setPersons={setPersons}
+                newFilter={newFilter}
+            />
         </>
     );
 };
