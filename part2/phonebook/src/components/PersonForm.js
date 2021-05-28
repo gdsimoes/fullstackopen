@@ -11,14 +11,52 @@ const PersonForm = (props) => {
         setNewNumber,
         persons,
         setPersons,
+        setNotification,
     } = props;
 
     function addPerson(event) {
         event.preventDefault();
 
-        if (persons.some((person) => person.name === newName)) {
-            alert(`${newName} is already added to phonebook`);
-            // I'm not sure if I should reset newName and newNumber
+        const person = persons.find((p) => p.name === newName);
+        if (person) {
+            const question = `${person.name} is already added to phonebook, replace the old number with a new one?`;
+
+            if (window.confirm(question)) {
+                const updatedObject = {
+                    ...person,
+                    number: newNumber,
+                };
+
+                personService
+                    .update(updatedObject)
+                    .then((returnedPerson) => {
+                        // Render the updated entry and the notification
+                        setPersons(
+                            persons.map((p) =>
+                                p.name !== returnedPerson.name
+                                    ? p
+                                    : updatedObject
+                            )
+                        );
+                        setNotification({
+                            msg: `Number for ${returnedPerson.name} was changed`,
+                            error: false,
+                        });
+                        setTimeout(() => {
+                            setNotification(null);
+                        }, 5000);
+                    })
+                    .catch((error) => {
+                        setNotification({
+                            msg: `Information of ${newName} has already been removed from server`,
+                            error: true,
+                        });
+                        setTimeout(() => {
+                            setNotification(null);
+                        }, 5000);
+                        setPersons(persons.filter((p) => p.id !== person.id));
+                    });
+            }
             setNewName("");
             setNewNumber("");
         } else {
@@ -29,6 +67,10 @@ const PersonForm = (props) => {
 
             personService.create(personObj).then((person) => {
                 setPersons(persons.concat(person));
+                setNotification({ msg: `Added ${newName}`, error: false });
+                setTimeout(() => {
+                    setNotification(null);
+                }, 5000);
                 setNewName("");
                 setNewNumber("");
             });

@@ -6,7 +6,7 @@ const DeleteButton = ({ persons, setPersons, person }) => {
         if (window.confirm(`Delete ${person.name}?`)) {
             personService
                 .remove(person.id)
-                .then(setPersons(persons.slice(0, persons.length - 1)));
+                .then(setPersons(persons.filter((p) => p.id !== person.id)));
         }
     };
     return <button onClick={handleClick}>delete</button>;
