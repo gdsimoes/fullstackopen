@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 
+// Module responsible for the interaction with the database
 import personService from "./services/personService";
+
+// Components
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
@@ -13,6 +16,7 @@ const App = () => {
     const [newFilter, setNewFilter] = useState("");
     const [notification, setNotification] = useState(null);
 
+    // Fetch all people from the database after first render
     useEffect(() => {
         personService
             .getAll()

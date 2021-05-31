@@ -1,6 +1,9 @@
 import React from "react";
 
 const Notification = ({ notification }) => {
+    // The notification state carries two pices of imformation:
+    // the message to be shown (notification.msg) and a boolean
+    // (notification.error) signaling if the message is an error.
     if (notification === null) {
         return null;
     } else {
