@@ -1,4 +1,4 @@
-import React from "react";
+// 10 17 14 31
 
 const Header = (props) => {
     return <h1>{props.name}</h1>;
@@ -7,7 +7,7 @@ const Header = (props) => {
 const Part = (props) => {
     return (
         <p>
-            {props.part} {props.exercises}
+            {props.name} {props.exercises}
         </p>
     );
 };
@@ -16,15 +16,15 @@ const Content = (props) => {
     return (
         <>
             <Part
-                part={props.parts[0].name}
+                name={props.parts[0].name}
                 exercises={props.parts[0].exercises}
             />
             <Part
-                part={props.parts[1].name}
+                name={props.parts[1].name}
                 exercises={props.parts[1].exercises}
             />
             <Part
-                part={props.parts[2].name}
+                name={props.parts[2].name}
                 exercises={props.parts[2].exercises}
             />
         </>

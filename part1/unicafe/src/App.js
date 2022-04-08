@@ -1,48 +1,49 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const Button = ({ handleClick, text }) => {
+const Button = ({ text, handleClick }) => {
     return <button onClick={handleClick}>{text}</button>;
 };
 
-const Statistic = ({ name, stats }) => {
-    return (
-        <tr>
-            <td>{name}</td>
-            <td>{stats}</td>
-        </tr>
-    );
-};
+const StatisticLine = ({ text, value }) => (
+    <tr>
+        <td>{text}</td>
+        <td>
+            {value} {text === "positive" ? "%" : ""}
+        </td>
+    </tr>
+);
 
 const Statistics = ({ good, neutral, bad }) => {
-    // some stats constants
-    const all = good + neutral + bad;
+    const all = good + bad + neutral;
     const average = (good - bad) / all;
-    const positive = `${(good / all) * 100} %`;
+    const positive = (good / all) * 100;
 
-    // Show no statistics before feedback is given.
     if (all === 0) {
         return (
             <>
-                <h1>statistics</h1>
-                <p>No feedback given</p>
+                <h2>statistics</h2>
+
+                <div>No feedback given</div>
+            </>
+        );
+    } else {
+        return (
+            <>
+                <h2>statistics</h2>
+
+                <table>
+                    <tbody>
+                        <StatisticLine text="good" value={good} />
+                        <StatisticLine text="neutral" value={neutral} />
+                        <StatisticLine text="bad" value={bad} />
+                        <StatisticLine text="all" value={all} />
+                        <StatisticLine text="average" value={average} />
+                        <StatisticLine text="positive" value={positive} />
+                    </tbody>
+                </table>
             </>
         );
     }
-    return (
-        <>
-            <h1>statistics</h1>
-            <table>
-                <tbody>
-                    <Statistic name="good" stats={good} />
-                    <Statistic name="neutral" stats={neutral} />
-                    <Statistic name="bad" stats={bad} />
-                    <Statistic name="all" stats={all} />
-                    <Statistic name="average" stats={average} />
-                    <Statistic name="positive" stats={positive} />
-                </tbody>
-            </table>
-        </>
-    );
 };
 
 const App = () => {
@@ -51,32 +52,19 @@ const App = () => {
     const [neutral, setNeutral] = useState(0);
     const [bad, setBad] = useState(0);
 
-    // I'm not a fan of switch. It's annoyingg how we need to put the
-    // default case to avoid warnings.
-    const eventHandler = (type) => {
-        switch (type) {
-            case "good":
-                return () => setGood(good + 1);
-            case "neutral":
-                return () => setNeutral(neutral + 1);
-            case "bad":
-                return () => setBad(bad + 1);
-
-            // I should probably better handle the error
-            default:
-                return;
-        }
-    };
-
     return (
-        <div>
-            <h1>give feedback</h1>
-            <Button handleClick={eventHandler("good")} text="good" />
-            <Button handleClick={eventHandler("neutral")} text="neutral" />
-            <Button handleClick={eventHandler("bad")} text="bad" />
+        <>
+            <h2>give feedback</h2>
+
+            <Button text="good" handleClick={() => setGood(good + 1)} />
+            <Button
+                text="neutral"
+                handleClick={() => setNeutral(neutral + 1)}
+            />
+            <Button text="bad" handleClick={() => setBad(bad + 1)} />
 
             <Statistics good={good} neutral={neutral} bad={bad} />
-        </div>
+        </>
     );
 };
 
