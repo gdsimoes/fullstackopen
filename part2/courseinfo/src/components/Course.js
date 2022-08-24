@@ -24,23 +24,22 @@ const Content = ({ parts }) => {
     );
 };
 
-// const Total = (props) => {
-//     return (
-//         <p>
-//             Number of exercises
-//             {props.parts[0].exercises +
-//                 props.parts[1].exercises +
-//                 props.parts[2].exercises}
-//         </p>
-//     );
-// };
+const Total = ({ parts }) => {
+    const total = parts.reduce((curr, part) => curr + part.exercises, 0);
+    // Since this is a simple project I avoided using CSS
+    return (
+        <p>
+            <strong>Total of {total} exercises</strong>
+        </p>
+    );
+};
 
 const Course = ({ course }) => {
     return (
         <>
             <Header name={course.name} />
             <Content parts={course.parts} />
-            {/* <Total parts={course.parts} /> */}
+            <Total parts={course.parts} />
         </>
     );
 };
