@@ -40,21 +40,33 @@ const App = () => {
         <div>
             <h2>Phonebook</h2>
             <div>
-                filter shown with <Input value={filter} setState={setFilter} />
+                <Input
+                    label={"filter shown with "}
+                    value={filter}
+                    setState={setFilter}
+                />
             </div>
-            <h2>add a new</h2>
+            <h3>add a new</h3>
             <form onSubmit={addPerson}>
                 <div>
-                    name: <Input value={newName} setState={setNewName} />
+                    <Input
+                        label={"name: "}
+                        value={newName}
+                        setState={setNewName}
+                    />
                 </div>
                 <div>
-                    number: <Input value={newNumber} setState={setNewNumber} />
+                    <Input
+                        label={"number: "}
+                        value={newNumber}
+                        setState={setNewNumber}
+                    />
                 </div>
                 <div>
                     <button type="submit">add</button>
                 </div>
             </form>
-            <h2>Numbers</h2>
+            <h3>Numbers</h3>
             {filteredPersons.map((person) => (
                 <Person
                     key={person.name}

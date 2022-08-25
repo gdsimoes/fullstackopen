@@ -1,9 +1,12 @@
-const Filter = ({ value, setState }) => {
+const Filter = ({ label, value, setState }) => {
     return (
-        <input
-            value={value}
-            onChange={(event) => setState(event.target.value)}
-        />
+        <>
+            {label}
+            <input
+                value={value}
+                onChange={(event) => setState(event.target.value)}
+            />
+        </>
     );
 };
 
