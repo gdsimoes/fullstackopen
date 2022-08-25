@@ -24,7 +24,7 @@ const App = () => {
                 value={filter}
                 setState={setFilter}
             />
-            <Countries countries={countries} />
+            <Countries countries={countries} setFilter={setFilter} />
         </>
     );
 };
