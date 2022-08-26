@@ -25,7 +25,7 @@ const Weather = ({ capitalName, lat, lon }) => {
     return (
         <div>
             <h2>Weather in {capitalName}</h2>
-            <p>temperature {temp} Celcius</p>
+            <p>temperature {temp} Celsius</p>
             <img
                 src={`http://openweathermap.org/img/wn/${icon}@2x.png`}
                 alt=""
