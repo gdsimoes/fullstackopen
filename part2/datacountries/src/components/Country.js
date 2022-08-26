@@ -1,5 +1,13 @@
+import Weather from "./Weather";
+
 const Country = ({ country }) => {
-    console.log(Object.values(country.languages));
+    // Only the first capital will be shown
+    const [capitalName, lat, lon] = [
+        country?.capital?.[0],
+        country?.capitalInfo?.latlng?.[0],
+        country?.capitalInfo?.latlng?.[1],
+    ];
+
     return (
         <div>
             <h1>{country.name.common}</h1>
@@ -13,7 +21,9 @@ const Country = ({ country }) => {
                 ))}
             </ul>
 
-            <img src={country.flags.png} alt="Flag" />
+            <img src={country.flags.png} alt="country flag" />
+
+            <Weather capitalName={capitalName} lat={lat} lon={lon} />
         </div>
     );
 };
