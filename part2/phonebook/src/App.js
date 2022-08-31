@@ -26,14 +26,22 @@ const App = () => {
                 number: newNumber,
             };
 
-            personsService.create(personObject);
-            setPersons(persons.concat(personObject));
+            personsService
+                .create(personObject)
+                .then((serverObj) => setPersons(persons.concat(serverObj)));
         } else {
             alert(`${newName} is already added to phonebook`);
         }
 
         setNewName("");
         setNewNumber("");
+    };
+
+    const delPerson = (person) => {
+        if (window.confirm(`Delete ${person.name}?`)) {
+            personsService.del(person.id);
+            setPersons(persons.filter((p) => p.id !== person.id));
+        }
     };
 
     const filteredPersons = persons.filter((person) =>
@@ -73,9 +81,10 @@ const App = () => {
             <h3>Numbers</h3>
             {filteredPersons.map((person) => (
                 <Person
-                    key={person.name}
+                    key={person.id}
                     name={person.name}
                     number={person.number}
+                    delPerson={() => delPerson(person)}
                 />
             ))}
         </div>
