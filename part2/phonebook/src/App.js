@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import Person from "./components/Person";
 import Input from "./components/Input";
+import Notification from "./components/Notification";
 
 import personsService from "./services/persons";
 
@@ -10,6 +11,7 @@ const App = () => {
     const [newName, setNewName] = useState("");
     const [newNumber, setNewNumber] = useState("");
     const [filter, setFilter] = useState("");
+    const [message, setMessage] = useState(null);
 
     useEffect(() => {
         personsService
@@ -26,9 +28,13 @@ const App = () => {
                 number: newNumber,
             };
 
-            personsService
-                .create(personObject)
-                .then((serverObj) => setPersons(persons.concat(serverObj)));
+            personsService.create(personObject).then((serverObj) => {
+                setPersons(persons.concat(serverObj));
+                setMessage(`Added ${serverObj.name}`);
+                setTimeout(() => {
+                    setMessage(null);
+                }, 5000);
+            });
         } else {
             const msg = `${newName} is already added to phonebook, replace the old number with a new one?`;
             const personIndex = persons.findIndex(
@@ -42,9 +48,13 @@ const App = () => {
             if (window.confirm(msg)) {
                 const personsCopy = [...persons];
                 personsCopy[personIndex] = personObject;
-                personsService
-                    .update(personObject)
-                    .then((serverObj) => setPersons(personsCopy));
+                personsService.update(personObject).then((serverObj) => {
+                    setPersons(personsCopy);
+                    setMessage(`Change number of ${serverObj.name}`);
+                    setTimeout(() => {
+                        setMessage(null);
+                    }, 5000);
+                });
             }
         }
 
@@ -66,6 +76,7 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
+            <Notification message={message} />
             <div>
                 <Input
                     label={"filter shown with "}
