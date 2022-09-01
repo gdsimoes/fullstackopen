@@ -30,7 +30,22 @@ const App = () => {
                 .create(personObject)
                 .then((serverObj) => setPersons(persons.concat(serverObj)));
         } else {
-            alert(`${newName} is already added to phonebook`);
+            const msg = `${newName} is already added to phonebook, replace the old number with a new one?`;
+            const personIndex = persons.findIndex(
+                (person) => person.name === newName
+            );
+            const personObject = {
+                ...persons[personIndex],
+                number: newNumber,
+            };
+
+            if (window.confirm(msg)) {
+                const personsCopy = [...persons];
+                personsCopy[personIndex] = personObject;
+                personsService
+                    .update(personObject)
+                    .then((serverObj) => setPersons(personsCopy));
+            }
         }
 
         setNewName("");
