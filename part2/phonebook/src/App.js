@@ -19,6 +19,17 @@ const App = () => {
             .then((personsFromServer) => setPersons(personsFromServer));
     }, []);
 
+    const setErrorMessage = (name) => {
+        setPersons(persons.filter((person) => person.name !== name));
+        setMessage({
+            text: `Information of ${name} has already been removed from server`,
+            type: "error",
+        });
+        setTimeout(() => {
+            setMessage(null);
+        }, 5000);
+    };
+
     const addPerson = (event) => {
         event.preventDefault();
 
@@ -30,7 +41,10 @@ const App = () => {
 
             personsService.create(personObject).then((serverObj) => {
                 setPersons(persons.concat(serverObj));
-                setMessage(`Added ${serverObj.name}`);
+                setMessage({
+                    text: `Added ${serverObj.name}`,
+                    type: "notification",
+                });
                 setTimeout(() => {
                     setMessage(null);
                 }, 5000);
@@ -48,13 +62,19 @@ const App = () => {
             if (window.confirm(msg)) {
                 const personsCopy = [...persons];
                 personsCopy[personIndex] = personObject;
-                personsService.update(personObject).then((serverObj) => {
-                    setPersons(personsCopy);
-                    setMessage(`Change number of ${serverObj.name}`);
-                    setTimeout(() => {
-                        setMessage(null);
-                    }, 5000);
-                });
+                personsService
+                    .update(personObject)
+                    .then((serverObj) => {
+                        setPersons(personsCopy);
+                        setMessage({
+                            text: `Change number of ${serverObj.name}`,
+                            type: "notification",
+                        });
+                        setTimeout(() => {
+                            setMessage(null);
+                        }, 5000);
+                    })
+                    .catch(() => setErrorMessage(newName));
             }
         }
 
@@ -64,8 +84,19 @@ const App = () => {
 
     const delPerson = (person) => {
         if (window.confirm(`Delete ${person.name}?`)) {
-            personsService.del(person.id);
-            setPersons(persons.filter((p) => p.id !== person.id));
+            personsService
+                .del(person.id)
+                .then(() => {
+                    setPersons(persons.filter((p) => p.id !== person.id));
+                    setMessage({
+                        text: `Deleted information of ${person.name}`,
+                        type: "notification",
+                    });
+                    setTimeout(() => {
+                        setMessage(null);
+                    }, 5000);
+                })
+                .catch(() => setErrorMessage(person.name));
         }
     };
 
