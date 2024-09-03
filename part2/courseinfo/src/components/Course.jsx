@@ -1,5 +1,5 @@
 function Header({ course }) {
-    return <h1>{course}</h1>;
+    return <h2>{course}</h2>;
 }
 
 function Part({ part, exercises }) {
@@ -23,7 +23,7 @@ function Content({ parts }) {
 function Total({ parts }) {
     return (
         <p>
-            <strong>Total of {parts.reduce((sum, part) => sum + part.exercises, 0)} exercises</strong>
+            <strong>total of {parts.reduce((sum, part) => sum + part.exercises, 0)} exercises</strong>
         </p>
     );
 }
