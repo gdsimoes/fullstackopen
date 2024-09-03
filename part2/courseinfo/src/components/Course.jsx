@@ -23,7 +23,7 @@ function Content({ parts }) {
 function Total({ parts }) {
     return (
         <p>
-            <strong>Total of {parts.reduce((acc, b) => acc + b.exercises, 0)} exercises</strong>
+            <strong>Total of {parts.reduce((sum, part) => sum + part.exercises, 0)} exercises</strong>
         </p>
     );
 }
