@@ -13,7 +13,7 @@ const App = () => {
     const [search, setSearch] = useState("");
 
     useEffect(() => {
-        personService.getAll().then((initialPersons) => {
+        personService.read().then((initialPersons) => {
             setPersons(initialPersons);
         });
     }, []);

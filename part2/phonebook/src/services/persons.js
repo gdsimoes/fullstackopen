@@ -1,13 +1,18 @@
 import axios from "axios";
 const baseUrl = "http://localhost:3001/persons";
 
-async function getAll() {
+async function create(newPerson) {
+    const response = await axios.post(baseUrl, newPerson);
+    return response.data;
+}
+
+async function read() {
     const response = await axios.get(baseUrl);
     return response.data;
 }
 
-async function create(newPerson) {
-    const response = await axios.post(baseUrl, newPerson);
+async function update(id, newPerson) {
+    const response = await axios.put(`${baseUrl}/${id}`, newPerson);
     return response.data;
 }
 
@@ -16,4 +21,4 @@ async function del(id) {
     return response.data;
 }
 
-export default { getAll, create, del };
+export default { read, create, del, update };
