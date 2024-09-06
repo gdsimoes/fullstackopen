@@ -1,3 +1,5 @@
+import axios from "axios";
+
 function PersonForm({ newName, setNewName, newNumber, setNewNumber, persons, setPersons }) {
     function handleSubmit(event) {
         event.preventDefault();
@@ -7,10 +9,11 @@ function PersonForm({ newName, setNewName, newNumber, setNewNumber, persons, set
             return;
         }
 
-        const newPersons = [...persons, { name: newName, number: newNumber }];
-        setPersons(newPersons);
-        setNewName("");
-        setNewNumber("");
+        axios.post("http://localhost:3001/persons", { name: newName, number: newNumber }).then((response) => {
+            setNewName("");
+            setNewNumber("");
+            setPersons([...persons, response.data]);
+        });
     }
 
     return (
