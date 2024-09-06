@@ -11,4 +11,9 @@ async function create(newPerson) {
     return response.data;
 }
 
-export default { getAll, create };
+async function del(id) {
+    const response = await axios.delete(`${baseUrl}/${id}`);
+    return response.data;
+}
+
+export default { getAll, create, del };
