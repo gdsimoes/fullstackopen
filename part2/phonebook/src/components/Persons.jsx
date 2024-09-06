@@ -4,7 +4,7 @@ function Persons({ persons, search }) {
             {persons
                 .filter((person) => person.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
                 .map((person) => (
-                    <div key={person.name}>
+                    <div key={person.id}>
                         {person.name} {person.number}
                     </div>
                 ))}

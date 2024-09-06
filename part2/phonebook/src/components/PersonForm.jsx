@@ -1,7 +1,7 @@
-import axios from "axios";
+import personService from "../services/persons";
 
 function PersonForm({ newName, setNewName, newNumber, setNewNumber, persons, setPersons }) {
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
 
         if (persons.some((person) => person.name === newName)) {
@@ -9,11 +9,10 @@ function PersonForm({ newName, setNewName, newNumber, setNewNumber, persons, set
             return;
         }
 
-        axios.post("http://localhost:3001/persons", { name: newName, number: newNumber }).then((response) => {
-            setNewName("");
-            setNewNumber("");
-            setPersons([...persons, response.data]);
-        });
+        const returnedPerson = await personService.create({ name: newName, number: newNumber });
+        setNewName("");
+        setNewNumber("");
+        setPersons([...persons, returnedPerson]);
     }
 
     return (
