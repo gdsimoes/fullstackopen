@@ -5,12 +5,14 @@ import personService from "./services/persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import Notification from "./components/Notification";
 
 const App = () => {
     const [persons, setPersons] = useState([]);
     const [newName, setNewName] = useState("");
     const [newNumber, setNewNumber] = useState("");
     const [search, setSearch] = useState("");
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         personService.read().then((initialPersons) => {
@@ -18,9 +20,20 @@ const App = () => {
         });
     }, []);
 
+    // Remove Notification after 5 seconds
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMessage("");
+        }, 5000);
+
+        return () => clearTimeout(timer);
+    }, [message]);
+
     return (
         <div>
             <h2>Phonebook</h2>
+
+            <Notification message={message} />
 
             <Filter search={search} setSearch={setSearch} />
 
@@ -33,6 +46,7 @@ const App = () => {
                 setNewNumber={setNewNumber}
                 persons={persons}
                 setPersons={setPersons}
+                setMessage={setMessage}
             />
 
             <h2>Numbers</h2>
