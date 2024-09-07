@@ -1,9 +1,11 @@
 const Notification = ({ message }) => {
-    if (message === "") {
+    if (message.value === "") {
         return null;
     }
 
-    return <div className="message">{message}</div>;
+    const className = message.type === "error" ? "message error" : "message";
+
+    return <div className={className}>{message.value}</div>;
 };
 
 export default Notification;

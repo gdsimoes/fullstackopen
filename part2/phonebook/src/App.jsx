@@ -12,7 +12,7 @@ const App = () => {
     const [newName, setNewName] = useState("");
     const [newNumber, setNewNumber] = useState("");
     const [search, setSearch] = useState("");
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState({ value: "", type: "" });
 
     useEffect(() => {
         personService.read().then((initialPersons) => {
@@ -22,8 +22,12 @@ const App = () => {
 
     // Remove Notification after 5 seconds
     useEffect(() => {
+        if (message.value === "") {
+            return;
+        }
+
         const timer = setTimeout(() => {
-            setMessage("");
+            setMessage({ value: "", type: "" });
         }, 5000);
 
         return () => clearTimeout(timer);

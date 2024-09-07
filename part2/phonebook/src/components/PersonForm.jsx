@@ -7,9 +7,17 @@ function PersonForm({ newName, setNewName, newNumber, setNewNumber, persons, set
         if (persons.some((person) => person.name === newName)) {
             if (confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
                 const { id } = persons.find((person) => person.name === newName);
-                const updatedPerson = await personService.update(id, { name: newName, number: newNumber });
-                setPersons(persons.map((person) => (person.id !== id ? person : updatedPerson)));
-                setMessage(`Updated ${newName}`);
+                try {
+                    const updatedPerson = await personService.update(id, { name: newName, number: newNumber });
+                    setPersons(persons.map((person) => (person.id !== id ? person : updatedPerson)));
+                    setMessage({ value: `Updated ${newName}`, type: "" });
+                } catch (error) {
+                    setMessage({
+                        value: `Information of ${newName} has already been removed from the server`,
+                        type: "error",
+                    });
+                    setPersons(persons.filter((person) => person.id !== id));
+                }
             }
 
             setNewName("");
@@ -18,7 +26,7 @@ function PersonForm({ newName, setNewName, newNumber, setNewNumber, persons, set
         }
 
         const returnedPerson = await personService.create({ name: newName, number: newNumber });
-        setMessage(`Added ${newName}`);
+        setMessage({ value: `Added ${newName}`, type: "" });
         setNewName("");
         setNewNumber("");
         setPersons([...persons, returnedPerson]);
