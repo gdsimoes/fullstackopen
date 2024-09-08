@@ -42,7 +42,9 @@ function App() {
         content = (
             <>
                 {filteredCountries.map((country) => (
-                    <p key={country}>{country}</p>
+                    <p key={country}>
+                        {country} <button onClick={() => handleChange({ target: { value: country } })}>show</button>
+                    </p>
                 ))}
             </>
         );

@@ -2,11 +2,14 @@ import React from "react";
 
 import axios from "axios";
 
+import Weather from "./Weather";
+
 function Country({ name }) {
     const [capitals, setCapitals] = React.useState([]);
     const [area, setArea] = React.useState("");
     const [languages, setLanguages] = React.useState([]);
     const [flagUrl, setFlagUrl] = React.useState("");
+    const [coordinates, setCoordinates] = React.useState({ lat: null, lng: null });
 
     React.useEffect(() => {
         axios.get(`https://studies.cs.helsinki.fi/restcountries/api/name/${name}`).then(({ data }) => {
@@ -14,6 +17,7 @@ function Country({ name }) {
             setArea(data.area);
             setLanguages(Object.values(data.languages));
             setFlagUrl(data.flags.png);
+            setCoordinates({ lat: data.capitalInfo.latlng[0], lng: data.capitalInfo.latlng[1] });
             console.log(data);
         });
     }, [name]);
@@ -30,6 +34,7 @@ function Country({ name }) {
                 ))}
             </ul>
             <img src={flagUrl} alt={`Flag of ${name}`} />
+            {capitals.length > 0 ? <Weather name={capitals[0]} lat={coordinates.lat} lng={coordinates.lng} /> : null}
         </article>
     );
 }
