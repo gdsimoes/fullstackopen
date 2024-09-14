@@ -11,12 +11,17 @@ function PersonForm({ newName, setNewName, newNumber, setNewNumber, persons, set
                     const updatedPerson = await personService.update(id, { name: newName, number: newNumber });
                     setPersons(persons.map((person) => (person.id !== id ? person : updatedPerson)));
                     setMessage({ value: `Updated ${newName}`, type: "" });
-                } catch {
-                    setMessage({
-                        value: `Information of ${newName} has already been removed from the server`,
-                        type: "error",
-                    });
-                    setPersons(persons.filter((person) => person.id !== id));
+                } catch (error) {
+                    // console.log(error.response.data);
+                    if (error.response.status === 404) {
+                        setMessage({
+                            value: `Information of ${newName} has already been removed from the server`,
+                            type: "error",
+                        });
+                        setPersons(persons.filter((person) => person.id !== id));
+                    } else if (error.response.status === 400) {
+                        setMessage({ value: error.response.data.error, type: "error" });
+                    }
                 }
             }
 
@@ -25,11 +30,16 @@ function PersonForm({ newName, setNewName, newNumber, setNewNumber, persons, set
             return;
         }
 
-        const returnedPerson = await personService.create({ name: newName, number: newNumber });
-        setMessage({ value: `Added ${newName}`, type: "" });
-        setNewName("");
-        setNewNumber("");
-        setPersons([...persons, returnedPerson]);
+        try {
+            const returnedPerson = await personService.create({ name: newName, number: newNumber });
+            setMessage({ value: `Added ${newName}`, type: "" });
+            setPersons([...persons, returnedPerson]);
+        } catch (error) {
+            setMessage({ value: error.response.data.error, type: "error" });
+        } finally {
+            setNewName("");
+            setNewNumber("");
+        }
     }
 
     return (
